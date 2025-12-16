@@ -24,4 +24,6 @@ variable "instance_type" {
 
 variable "project_name" {
   description = "Project name tag for resources"
+  type = string
+  default = "NetSpecialty-Lab"
 }

@@ -7,12 +7,12 @@ resource "tls_private_key" "generated_key" {
 # Create the key pair in AWS using the public key from above.
 resource "aws_key_pair" "generated_key_pair" {
   key_name   = "${var.project_name}-Key"
-  public_key = tls_private_key.generated_key.private_key_openssh
+  public_key = tls_private_key.generated_key.public_key_openssh
 }
 
 #Save the private Key to a local file.
-resource "local_file" "private_key_pem" {
+resource "local_sensitive_file" "private_key_pem" {
   content         = tls_private_key.generated_key.private_key_pem
-  filename        = "${path.module}/my-key.pem"
+  filename        = "${path.module}/NetSpecialty-Lab-Key.pem"
   file_permission = "0400"
 }

@@ -1,7 +1,7 @@
 # --- Security Group ---
 
 resource "aws_security_group" "web_sg" {
-  name        = "${var.project_name}-SG"
+  name        = "Allow SSH"
   description = "Allow SSH and ICMP"
   vpc_id      = aws_vpc.main_vpc.id
 
@@ -27,5 +27,9 @@ resource "aws_security_group" "web_sg" {
     to_port     = 0
     protocol    = -1
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.project_name}-SG"
   }
 }
