@@ -1,5 +1,6 @@
 # --- VPC & Networking ---
 
+# Create the VPC
 resource "aws_vpc" "main_vpc" {
   cidr_block = var.vpc_cidr
 
@@ -8,6 +9,7 @@ resource "aws_vpc" "main_vpc" {
   }
 }
 
+# Create the IGW and attach to VPC
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main_vpc.id
 
@@ -16,6 +18,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
+# Create Public Subnet
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.main_vpc.id
   cidr_block              = var.public_subnet_cidr
@@ -27,6 +30,7 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
+# Create Route Table for Public Subnet and associate with IGW
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.main_vpc.id
 
@@ -40,6 +44,7 @@ resource "aws_route_table" "public_rt" {
   }
 }
 
+# Associate Route Table with Public Subnet
 resource "aws_route_table_association" "public_assoc" {
   subnet_id      = aws_subnet.public_subnet.id
   route_table_id = aws_route_table.public_rt.id
