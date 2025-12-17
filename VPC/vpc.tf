@@ -18,15 +18,17 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# Create Public Subnet
-resource "aws_subnet" "public_subnet" {
+# Create Public and Private Subnet
+resource "aws_subnet" "subnets" {
+  for_each                = var.subnet_cidr
   vpc_id                  = aws_vpc.main_vpc.id
-  cidr_block              = var.public_subnet_cidr
-  map_public_ip_on_launch = true
+  cidr_block              = each.value.cidr_block
+  map_public_ip_on_launch = each.value.public
   availability_zone       = "${var.aws_region}a"
 
   tags = {
-    Name = "${var.project_name}-PulbicSubnet"
+    Name = var.project_name
+    type = each.key
   }
 }
 
@@ -46,6 +48,6 @@ resource "aws_route_table" "public_rt" {
 
 # Associate Route Table with Public Subnet
 resource "aws_route_table_association" "public_assoc" {
-  subnet_id      = aws_subnet.public_subnet.id
+  subnet_id      = aws_subnet.subnets["public_subnet"].id
   route_table_id = aws_route_table.public_rt.id
 }

@@ -8,14 +8,16 @@ data "aws_ami" "amazon_linux_2023" {
   }
 }
 
-resource "aws_instance" "web_server" {
+resource "aws_instance" "ec2_instance" {
+  for_each = var.subnet_cidr
   ami                    = data.aws_ami.amazon_linux_2023.id
   instance_type          = var.instance_type
-  subnet_id              = aws_subnet.public_subnet.id
+  subnet_id              = aws_subnet.subnets[each.key].id
   vpc_security_group_ids = [aws_security_group.web_sg.id]
   key_name               = aws_key_pair.generated_key_pair.key_name
 
   tags = {
-    Name = "${var.project_name}-EC2"
+    Name = "${var.project_name}-EC2-${each.key}"
   }
 }
+
