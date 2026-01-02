@@ -30,10 +30,10 @@ resource "aws_eip" "RGNAT-eip" {
   domain = "vpc"
 }
 
-resource "aws_nat_gateway" "RGNAT-NGW" {
+resource "aws_nat_gateway" "RGNAT" {
   vpc_id = aws_vpc.RGNAT.id
   availability_mode = "regional"
-
+  
   tags = {
     Name = "RGNAT-NGW"
   }

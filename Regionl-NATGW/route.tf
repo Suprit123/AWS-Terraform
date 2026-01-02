@@ -3,7 +3,7 @@ resource "aws_route_table" "RGNAT-RT" {
   vpc_id = aws_vpc.RGNAT.id
     route {
         cidr_block = "0.0.0.0/0"
-        nat_gateway_id = aws_nat_gateway.RGNAT-NGW.id
+        nat_gateway_id = aws_nat_gateway.RGNAT.id
     }
 
     tags = {
