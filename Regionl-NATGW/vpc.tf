@@ -31,9 +31,9 @@ resource "aws_eip" "RGNAT-eip" {
 }
 
 resource "aws_nat_gateway" "RGNAT" {
-  vpc_id = aws_vpc.RGNAT.id
+  vpc_id            = aws_vpc.RGNAT.id
   availability_mode = "regional"
-  
+
   tags = {
     Name = "RGNAT-NGW"
   }

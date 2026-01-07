@@ -1,3 +1,4 @@
+# Create VPC Endpoint for EC2 in Mumbai region
 resource "aws_vpc_endpoint" "RGNAT-ep" {
   vpc_id            = aws_vpc.RGNAT.id
   vpc_endpoint_type = "Interface"
@@ -10,9 +11,10 @@ resource "aws_vpc_endpoint" "RGNAT-ep" {
   }
 }
 
+# Create EC2 Instance Connect Endpoint in Mumbai region
 resource "aws_ec2_instance_connect_endpoint" "name" {
-  subnet_id          = aws_subnet.subnets["subnet3"].id
-  
+  subnet_id = aws_subnet.subnets["subnet3"].id
+
 
   tags = {
     Name = "RGNAT-eice"
@@ -44,6 +46,7 @@ resource "aws_security_group" "RGNAT-ec2" {
   }
 }
 
+# Create data source to fetch the latest Amazon Linux 2023 AMI in Mumbai region
 data "aws_ami" "mumbai" {
   most_recent = true
   owners      = ["amazon"]
@@ -53,7 +56,7 @@ data "aws_ami" "mumbai" {
     values = ["al2023-ami-*-x86_64"]
   }
 }
-
+# Create an EC2 instance in Mumbai region using data source AMI
 resource "aws_instance" "mumbai" {
   ami                    = data.aws_ami.mumbai.id
   instance_type          = var.instance_type
