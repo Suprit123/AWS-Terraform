@@ -11,7 +11,7 @@ resource "aws_vpc" "TGW_VPC" {
 resource "aws_subnet" "TGW_SUBNET" {
   for_each          = var.subnets
   cidr_block        = each.value.cidr
-  vpc_id            = aws_vpc.TGW_VPC[each.value.vpc_name].id
+  vpc_id            = aws_vpc.TGW_VPC[each.value.vpc_key].id
   availability_zone = each.value.az
 
   tags = {
